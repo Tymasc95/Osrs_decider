@@ -16,16 +16,18 @@ if user_input.lower() != "yes":
     print("Then what the hell are you using this for??")
     sys.exit()
 
-time.sleep(0.6)
+time.sleep(0.8)
 print("What would you like to do?:")
+time.sleep(1)
+print("!new : to roll a new task")
 time.sleep(0.5)
-print("!new: to roll a new task")
-time.sleep(0.5)
+print("!current : to view current task")
+time.sleep(1)
 decision_input = input("Choice: ")
 
 if decision_input.lower() == "!new":
     
-    time.sleep(0.5)
+    time.sleep(0.8)
     
     # function to add a little flair to make it look like it's loading
     def loading_flair(text, delay=0.4):
@@ -43,8 +45,8 @@ if decision_input.lower() == "!new":
             sys.stdout.write(char)
             sys.stdout.flush()
 
-    # creates the illusion of loading if user_input == "yes"
-    loading_flair("Calculating Choice....")
+    # creates the illusion of loading if decision_input == "!new"
+    loading_flair("Choosing new task....")
 
     print()
 
@@ -115,7 +117,7 @@ if decision_input.lower() == "!new":
         
         # While any if statements return true, loops creating new tasks until user chooses not to
         while True:
-            completed_input = input("Have you completed your task? (Y/N): ")
+            completed_input = input("Have you completed your task?(Y/N): ")
             time.sleep(0.5)
             # If yes adds to counter for completed tasks and asks to roll a new task
             if completed_input.lower() == "y":
@@ -124,7 +126,7 @@ if decision_input.lower() == "!new":
                 print(f"Number of tasks completed: {completed_counter}")
                 time.sleep(1)
 
-                new_task_input = input("Would you like a new task? (Y/N): ")
+                new_task_input = input("Would you like a new task?(Y/N): ")
                 print()
                 # If yes to a new task generates a new task and asks for penalty re-roll
                 if new_task_input.lower() == "y":
@@ -136,7 +138,7 @@ if decision_input.lower() == "!new":
                     print()
                     penalty_picker()
                     print()
-                    time.sleep(2)
+                    time.sleep(3)
                 # If no for generating a new task script ends
                 else:
                     print("Ending script")
