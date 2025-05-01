@@ -25,20 +25,34 @@ def loading_flair(text, delay=0.4):
         time.sleep(delay)
         sys.stdout.write(char)
         sys.stdout.flush()
-        
+
+# Function to save task/completion counter         
 def task_saver(input, filename):
     with open(filename, 'w') as f:
          f.write(str(input))
-         
+
+# Function to load task        
 def task_loader(filename):
     try:
         with open(filename, 'r') as f:
-            read = f.read()
-        return read
+            read = f.read().strip()
+            if not read:
+                return "No saved task found. Use !new to generate one."
+            return read
     except FileNotFoundError:
         return "No saved task found. Use !new to generate one."
-    
-completed_tasks = int(task_loader(counter_file_name))
+
+# Function to load the completed tasks counter   
+def load_counter(filename):
+    try:
+        with open(filename, 'r') as f:
+            content = f.read().strip()
+            return int(content) if content else 0
+    except (FileNotFoundError, ValueError):
+        return 0
+
+# Variable to initially load the current completed task number    
+completed_tasks = load_counter(counter_file_name)
         
 loading_flair("Booting up OSRS Decider....")
 print()
@@ -56,7 +70,7 @@ time.sleep(0.8)
 print("!task : to view current task")
 time.sleep(0.8)
 print()
-time.sleep(0.8)
+time.sleep(0.5)
 decision_input = input("Choice: ")
 print()
 
@@ -78,7 +92,8 @@ Raid to run is: {random_raid}"""
         # Any other choice besides Raid and Boss
         case _:
             return f"""Your OSRS task is: {result}"""
-        
+
+# function to re-roll a new task and save it over the old and update the completion counter        
 def roll_new_task():
     global completed_tasks   
     # While any if statements return true, loops creating new tasks until user chooses not to
@@ -97,6 +112,7 @@ def roll_new_task():
             print()
             # If yes to a new task generates a new task and overwrites old task
             if new_task_input.lower() == "y":
+                time.sleep(0.8)
                 print("Generating new task:", end="")
                 loading_flair("....")
                 print()
@@ -108,18 +124,27 @@ def roll_new_task():
                 time.sleep(3)
             # If no for generating a new task script ends
             else:
+                time.sleep(0.8)
+                print("Okay, please use !new on next start up to generate a new task.")
+                task = ""
+                task_saver(task, file_name)
+                time.sleep(0.8)
+                print()
                 print("Ending script")
                 sys.exit()
-        # If has not been completed yet loops back to ask again until task is completed
+        # If has not been completed yet will ask to close program or loop back to check completion
         elif completed_input.lower() == "n":
             end_input = input("Would you like to close the decider and report completion later?(Y/N): ")
+            print()
             if end_input.lower() == "y":
+                time.sleep(0.8)
                 print("Okay! Please use !task when loading the program again")
                 time.sleep(0.8)
                 print()
                 print("Ending script")
                 sys.exit()
             elif end_input.lower() == "n":
+                time.sleep(0.8)
                 print("No problem, I will check again in a bit.")   
                 time.sleep(3)
                 print()
@@ -156,14 +181,22 @@ elif decision_input.lower() == "!task":
     current_task = task_loader(file_name)
     loading_flair("Loading current task....")
     print()
-    time.sleep(1)
-    print("This is your current task:")
-    time.sleep(1)
-    print(current_task)
-    time.sleep(4)
-    print()
+    if current_task == "No saved task found. Use !new to generate one.":
+        time.sleep(1)
+        print("No saved task found. Use !new to generate one.")
+        print()
+        time.sleep(0.5)
+        print("Ending Script")
+        sys.exit()
+    else:
+        time.sleep(0.5)
+        print("This is your current task:")
+        time.sleep(1)
+        print(current_task)
+        time.sleep(4)
+        print()
 
-    roll_new_task()
+        roll_new_task()
 
 
        
