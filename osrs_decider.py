@@ -7,8 +7,8 @@ raids = ["ToB", "ToA", "CoX"]
 bosses = ["Duke", "Zulrah", "Bandos", "Vorkath", "Artio", "Muspah", "Mole", "Vardorvis", "Huey", "Titans"]
 choices = ["Skilling", "Boss", "Raid", "Slayer", "GET THAT WARHAMMER", "Extra bloodshard?", "Corrupted Gauntlet"]
 
-file_name = "osrs_decider_log.txt"
-counter_file_name = "osrs_decider_counter.txt"
+file_name = "osrs_task_log.txt"
+counter_file_name = "osrs_task_counter.txt"
 
 # function to add a little flair to make it look like it's loading
 def loading_flair(text, delay=0.4):
@@ -132,10 +132,11 @@ def roll_new_task():
                 print()
                 print("Ending script")
                 sys.exit()
-        # If has not been completed yet will ask to close program or loop back to check completion
+        # If task has not been completed yet will ask to close program or loop back to check completion
         elif completed_input.lower() == "n":
             end_input = input("Would you like to close the decider and report completion later?(Y/N): ")
             print()
+            # Closes script and advises to use !task on next start up
             if end_input.lower() == "y":
                 time.sleep(0.8)
                 print("Okay! Please use !task when loading the program again")
@@ -143,6 +144,7 @@ def roll_new_task():
                 print()
                 print("Ending script")
                 sys.exit()
+            # Loops back to completed_input to start the process again
             elif end_input.lower() == "n":
                 time.sleep(0.8)
                 print("No problem, I will check again in a bit.")   
@@ -152,7 +154,7 @@ def roll_new_task():
         else:
             print("Please enter Y or N.")
     
-
+# Conditional to generate a new task and then loop through roll_new_task function
 if decision_input.lower() == "!new":
     
     time.sleep(0.8)
@@ -173,7 +175,8 @@ if decision_input.lower() == "!new":
     time.sleep(4)
     
     roll_new_task()
-    
+
+# Conditional to load current task and then loop through roll_new_task function, if no task is saved will advise to use !new to generate one   
 elif decision_input.lower() == "!task":
 
     time.sleep(1)
